@@ -35,5 +35,6 @@
 
 ### <a id="authors"></a>🕵️‍♂️ 〢 Authors
 - [Nekros](https://github.com/Nekros-dsc)
+- [Ruwin](https://github.com/Ruwin-dsc)
 
 ---
