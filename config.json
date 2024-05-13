@@ -1,0 +1,18 @@
+{
+  "token": "Put-Token-Here",
+  "owners": ["276705058370879489"],
+  "color": "#2b2d31",
+  "channel": {
+    "logs": "Channel-Id"
+},
+  "BDD": {
+    "note": "Si vous êtes confronté à des difficultés pour comprendre les étapes à suivre, je vous recommande vivement de consulter le fichier README ou de rejoindre le serveur de support sur Discord via ce lien : https://discord.gg/uhq",
+    "host": "Host",
+    "port": "Port",
+    "user": "User",
+    "database": "Database",
+    "password": "Password",
+    "charset": "Charset"
+  },
+  "PID": []
+}
