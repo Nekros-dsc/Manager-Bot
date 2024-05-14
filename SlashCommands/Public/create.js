@@ -157,12 +157,12 @@ async function copierArborescence(sourceDir, destinationParentDir, destinationFo
     const configachanger = require(`../../UsersBots/${client.user.id}/config.json`)
     if(configachanger) configachanger.token = token
 
-    fs.writeFileSync(`./UsersBots/${client.user.id}/config.json`, JSON.stringify(configachanger, null, 2));
+    fs.writeFileSync(`./usersbots/${client.user.id}/config.json`, JSON.stringify(configachanger, null, 2));
 
     await message.channel.send({ embeds: [embedStart5] })
     await message.channel.send({ embeds: [embedStart6] })
 
-    await require('../../Utils/lauchChildProcess')(`./UsersBots/${client.user.id}/index.js`, 'start')
+    await require('../../Utils/lauchChildProcess')(`./UsersBots/${client.user.id}/index.js`, 'start', await bot.users.fetch(client.user.id), bot)
     client.destroy()
     await message.channel.send({ embeds: [embedStart7] })
             const embed = new Discord.EmbedBuilder()
