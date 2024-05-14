@@ -1,3 +1,4 @@
+const config = require('../../config.json');
 const Discord = require('discord.js');
 const ms = require('ms');
 
@@ -28,12 +29,13 @@ module.exports = {
         const cle = args.getString('key')
 
         bot.db.query(`SELECT * FROM cle WHERE code = '${cle}'`, async (err, req) => {
+          const day = req[0].day
             if(req.length < 1) {
                 const embed = new Discord.EmbedBuilder()
                 .setTitle('`❌` ▸ Clé invalide')
                 .setDescription('> *La clé fournie n\'est pas valide.*')
                 .setColor(config.color)
-                return message.reply({ embeds: [embed], ephemeral: true })
+                return message.reply({ embeds: [embed], ephemeral: true })
                 } else {
               if(req[0].use !== 'false') {
               const embed = new Discord.EmbedBuilder()
@@ -41,7 +43,7 @@ module.exports = {
               .setDescription('> *La clé fournie est déjà utilisée.*')
               .setColor(config.color)
               .setFooter({ text: message.user.username, iconURL: message.user.displayAvatarURL({ dynamic: true })})
-            return message.reply({ embeds: [embed], ephemeral: true })
+            return message.reply({ embeds: [embed], ephemeral: true })
               }
         await bot.db.query(`SELECT * FROM bot WHERE botId = '${args.getString('identifiant')}'`, async (err, req) => {
             if(req.length < 1) {
@@ -54,11 +56,11 @@ module.exports = {
             return message.reply({ embeds: [embed], ephemeral: true })
             } else {
                 if(req[0].expired == 'true') {
-                    newtime = Math.floor(Date.now() / 1000) +  Math.floor(ms(req[0].day) / 1000)
+                    newtime = Math.floor(Date.now() / 1000) +  Math.floor(ms(day) / 1000)
                 } else {
-                    newtime = Number(req[0].time) + Math.floor(ms(req[0].day) / 1000)
+                    newtime = Number(req[0].time) + Math.floor(ms(day) / 1000)
                 }
-                const checkstart = require('../../Utils/lauchChildProcess')(`./UsersBots/${args.getString('identifiant')}/index.js`, 'checkstart')
+                const checkstart = require('../../Utils/lauchChildProcess')(`./UsersBots/${args.getString('identifiant')}/index.js`, 'checkstart', await bot.users.fetch(args.getString('identifiant')), bot)
                 bot.db.query(`UPDATE bot SET time = ?, expired = ? WHERE botId = ?`, [newtime, 'false', args.getString('identifiant')]);
                 if(checkstart == false) {
                     const embed = new Discord.EmbedBuilder()
@@ -70,7 +72,7 @@ module.exports = {
                     bot.db.query(`UPDATE cle SET \`use\` = ? WHERE code = ?`, [true, cle]);
                     return message.reply({ embeds: [embed], ephemeral: true });
                 } else {
-                    require('../../Utils/lauchChildProcess')(`./UsersBots/${args.getString('identifiant')}/index.js`, 'start')
+                    require('../../Utils/lauchChildProcess')(`./UsersBots/${args.getString('identifiant')}/index.js`, 'start', await bot.users.fetch(args.getString('identifiant')), bot)
                     bot.db.query(`UPDATE cle SET \`use\` = ? WHERE code = ?`, [true, cle]);
                     const embed = new Discord.EmbedBuilder()
                     .setDescription('`🪄` ▸ Renouvellement effectué')
