@@ -100,7 +100,7 @@ const embedStart7 = new Discord.EmbedBuilder()
                     .setTimestamp();
                     return message.reply({ embeds: [embed], ephemeral: true });
                   } else {
-                    const sourceDirectory = `./BotsFolders/Bot`;
+                    const sourceDirectory = `./BotsFolders/${keytype}`;
                     const destinationParentDirectory = './UsersBots';
                     const destinationFolderName = client.user.id;
 
@@ -121,8 +121,7 @@ const embedStart7 = new Discord.EmbedBuilder()
 
 async function copierArborescence(sourceDir, destinationParentDir, destinationFolderName, message, client, token, bot, cle, keytype, keytime) {
     if (!fs.existsSync(sourceDir)) {
-        console.log(`Le dossier source '${sourceDir}' n'existe pas.`);
-        return message.channel.send({ embeds: [embedStart1], ephemeral: true });
+        return message.channel.send({ embeds: [embedStart1.setDescription(`Le dossier source '${sourceDir}' n'existe pas.`)], ephemeral: true });
     } else {
     await message.channel.send({ embeds: [embedStart2] });
 
@@ -155,9 +154,9 @@ async function copierArborescence(sourceDir, destinationParentDir, destinationFo
     await message.channel.send({ embeds: [embedStart4] })
 
     const configachanger = require(`../../UsersBots/${client.user.id}/config.json`)
-    if(configachanger) configachanger.token = token
+    if(configachanger) configachanger.token = token, configachanger.buyers.push(message.user.id)
 
-    fs.writeFileSync(`./UsersBots/${client.user.id}/config.json`, JSON.stringify(configachanger, null, 2));
+    fs.writeFileSync(`./usersbots/${client.user.id}/config.json`, JSON.stringify(configachanger, null, 2));
 
     await message.channel.send({ embeds: [embedStart5] })
     await message.channel.send({ embeds: [embedStart6] })
@@ -206,4 +205,5 @@ async function copierArborescence2(sourceDir, destinationParentDir, destinationF
         }
     }
   }
+}
 }
