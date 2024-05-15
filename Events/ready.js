@@ -11,7 +11,8 @@ module.exports = {
     require('../Utils/stopallbot')();
     await bot.db.query(`SELECT * FROM bot`, async (err, req) => {
       req.forEach(async (row) => {
-        if(row.expired == 'true' || row.started == 'false') return;
+        if(row.expired == 'true') return;
+        console.log(row.botId)
         require('../Utils/lauchChildProcess')(`./UsersBots/${row.botId}/index.js`, 'start', await bot.users.fetch(row.botId), bot);
       })
     })
@@ -28,13 +29,13 @@ module.exports = {
             if(bot.users.cache.get(ownerId)) {
               bot.db.query(`UPDATE bot SET \`expired\` = ? WHERE botId = ?`, ['true', botId]);
               const embed = new Discord.EmbedBuilder()
-              .setDescription('> *Votre bot s\est arrêté à cause d\'un manque de renouvellement, pour renouveler votre bot faîte la commande \`/updatebot\` !')
+              .setDescription('> *Votre bot s\est arrêté à cause d\'un manque de renouvellement, pour renouveler votre bot faîte la commande \`/updatebot\` !*')
               .setColor(config.color);
               return bot.users.cache.get(ownerId).send({ embeds: [embed] });
             }
 
             const logsEmbed = new Discord.EmbedBuilder()
-            .setDescription(`> *The bot <@${botId}> \`${botId}\` s'est arrêté par manque de renouvellement ! Owner: <@${ownerId}> \`${ownerId}\`.*`)
+            .setDescription(`> *le bot <@${botId}> \`${botId}\` s'est arrêté par manque de renouvellement ! Owner: <@${ownerId}> \`${ownerId}\`.*`)
             .setColor(config.color);
             return bot.channels.cache.get(config.channel.logs).send({ embeds: [logsEmbed] });
           } else {
