@@ -12,7 +12,7 @@
     "user": "User",
     "database": "Database",
     "password": "Password",
-    "charset": "Charset"
+    "charset": "utf8mb4"
   },
   "PID": []
 }
